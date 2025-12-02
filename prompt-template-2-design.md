@@ -4,7 +4,7 @@
 You are a senior software architect specializing in translating functional requirements into comprehensive technical designs with clear architectural decisions, interfaces, and testing strategies.
 
 ## Task
-Convert the provided requirements document into a detailed Design Document that specifies the system architecture, component interfaces, data models, correctness properties, and comprehensive testing strategy including property-based testing.
+Convert the provided requirements document into a detailed Design Document that specifies the system architecture, component interfaces, data models, correctness properties, and comprehensive testing strategy focusing on unit tests, integration tests, and end-to-end tests.
 
 ## Input Format
 You will receive:
@@ -118,63 +118,93 @@ graph TB
 
 ### Unit Testing
 
-[Description of unit testing approach]
+[Description of unit testing approach - focus on testing individual functions and modules in isolation]
 
-- **[Component 1]**: [What to test]
-- **[Component 2]**: [What to test]
+**Test Coverage by Component**:
+- **[Component 1]**: [What to test - core logic, edge cases, error handling]
+- **[Component 2]**: [What to test - business rules, validations, transformations]
 ...
 
-Example unit tests:
-- [Test description 1]
-- [Test description 2]
+**Example Unit Tests**:
+- [Test description 1 - e.g., "Test user creation with valid data"]
+- [Test description 2 - e.g., "Test validation error handling for invalid email"]
+- [Test description 3 - e.g., "Test edge case: empty input handling"]
 ...
 
-### Property-Based Testing
-
-[Description of property-based testing approach using appropriate framework for the tech stack]
-
-**Configuration**:
-- Each property test should run a minimum of [N] iterations (specify exact number: default 100, use higher for critical/complex properties)
-- Each test must be tagged with a comment referencing the design document property
-- Tag format: `[comment syntax] Feature: [feature-name], Property {number}: {property_text}`
-
-**Property Test Coverage**:
-
-Each correctness property listed above will be implemented as a property-based test:
-
-[N]. **Property [N] ([Name])**: [Test description]
-
-[Repeat for all properties]
+**Key Focus Areas**:
+- Business logic validation
+- Edge cases and boundary conditions
+- Error handling and exception scenarios
+- Data transformation and calculation accuracy
 
 ### Integration Testing
 
-[Description of integration testing approach]
+[Description of integration testing approach - focus on testing how modules work together]
 
-- [Integration test scenario 1]
-- [Integration test scenario 2]
+**API Integration Tests**:
+- [API scenario 1 - e.g., "Test complete user registration flow with database"]
+- [API scenario 2 - e.g., "Test authentication with session management"]
+- [API scenario 3 - e.g., "Test data persistence and retrieval"]
 ...
 
-### Test Data Generation
+**Module Integration Tests**:
+- [Integration scenario 1 - e.g., "Test service layer with database layer"]
+- [Integration scenario 2 - e.g., "Test authentication with authorization"]
+...
 
-[Description of how to generate test data for the specified tech stack]
+**Key Focus Areas**:
+- API endpoint functionality with actual database
+- Service layer integration with data layer
+- Authentication and authorization flows
+- External service integrations (email, file storage, etc.)
 
+### End-to-End Testing
+
+[Description of E2E testing approach - focus on complete user workflows]
+
+**User Scenarios**:
+- [E2E scenario 1 - e.g., "Complete user registration and login flow"]
+- [E2E scenario 2 - e.g., "Create, update, and delete resource workflow"]
+- [E2E scenario 3 - e.g., "Multi-step business process from start to finish"]
+...
+
+**Key Focus Areas**:
+- Complete user journeys from UI to database
+- Cross-module workflows
+- Real-world usage scenarios
+- Critical business processes
+
+### Test Data Management
+
+[Description of how to manage test data for the specified tech stack]
+
+**Test Data Strategy**:
 ```[language]
-[Example test data generators]
+[Example test data setup and teardown]
+[Example test fixtures or factories]
 ```
+
+**Key Approaches**:
+- Use test fixtures for consistent data
+- Implement database seeding for integration tests
+- Use factories or builders for flexible test data creation
+- Ensure proper cleanup between tests
 
 ### Testing Tools
 
-- **Unit Testing**: [Framework for tech stack]
-- **Property-Based Testing**: [Framework for tech stack]
-- **Integration Testing**: [Framework for tech stack]
-- **[Other category]**: [Framework for tech stack]
+- **Unit Testing**: [Framework for tech stack - e.g., Jest, Vitest, pytest, JUnit]
+- **Integration Testing**: [Framework/Tools - e.g., Supertest, TestContainers]
+- **E2E Testing**: [Framework for tech stack - e.g., Playwright, Cypress, Selenium]
+- **Test Data**: [Tools - e.g., faker.js, factory libraries]
+- **Mocking**: [Tools - e.g., jest.mock, sinon, unittest.mock]
 ...
 
 ### Continuous Testing
 
-- [Testing phase 1]: [When to run]
-- [Testing phase 2]: [When to run]
-...
+- **On Every Commit**: Run unit tests (fast feedback)
+- **On Pull Request**: Run unit + integration tests
+- **Before Deployment**: Run full test suite including E2E tests
+- **Scheduled**: Periodic E2E tests on staging environment
 ```
 
 ## Guidelines
@@ -315,58 +345,93 @@ Common categories to consider:
 ### 7. Testing Strategy Section
 
 #### Unit Testing
-- List what will be tested at the unit level
-- Identify critical components that need unit tests
-- Provide examples of unit test scenarios
+- List what will be tested at the unit level for each module
+- Identify critical components that need comprehensive unit tests
+- Provide specific examples of unit test scenarios:
+  - Valid input handling
+  - Invalid input and error cases
+  - Edge cases and boundary conditions
+  - Business logic correctness
 - Suggest appropriate framework for the tech stack
+- Explain what should be mocked vs. what should be real
 
-#### Property-Based Testing
-This is **critical** and must be comprehensive:
-
-**Framework Selection**:
-- JavaScript/TypeScript: `fast-check`
-- Python: `hypothesis`
-- Java: `jqwik` or `junit-quickcheck`
-- Scala: `ScalaCheck`
-- Haskell: `QuickCheck`
-- Go: `gopter` or `rapid`
-- Rust: `quickcheck` or `proptest`
-- C#: `FsCheck`
-
-**Configuration**:
-- Specify minimum iterations for property tests:
-  - **Default: 100 iterations** (sufficient for most properties)
-  - Use 200-500 iterations for complex or critical properties only
-  - Document the rationale if using more than 100 iterations
-- Define tagging/commenting convention for traceability
-- Adapt comment syntax to the language (e.g., `//` for C-style, `#` for Python, etc.)
-
-**Test Coverage Mapping**:
-- List each correctness property
-- Describe how it will be tested with property-based testing
-- Explain what will be generated (random inputs)
-- Explain what will be verified (invariants)
+**Key Principles**:
+- Test one thing at a time
+- Fast execution (no database, no network)
+- Clear test names describing what is being tested
+- Use mocks/stubs for external dependencies
 
 #### Integration Testing
-- Describe end-to-end workflows to test
-- List critical integration points
-- Suggest appropriate framework for the tech stack
+- Describe how modules interact and what integration points need testing
+- List API endpoints and their expected behavior
+- Explain database integration testing approach:
+  - Using test database or in-memory database
+  - Test data setup and cleanup strategies
+  - Transaction handling in tests
+- List critical integration scenarios:
+  - Service-to-service communication
+  - Database operations with real schema
+  - Authentication/authorization flows
+  - External service integrations (APIs, file storage, email, etc.)
+- Suggest appropriate framework and tools for the tech stack
 
-#### Test Data Generation
-- Provide examples of data generators for the tech stack
-- Show how to generate random valid data
-- Show how to generate edge cases
-- Use the property-based testing framework's generators
+**Key Principles**:
+- Test actual integrations (real database, real HTTP calls)
+- Focus on interaction between components
+- Verify data flows correctly through the system
+- Test error handling across boundaries
+
+#### End-to-End Testing
+- Describe complete user workflows to test
+- List critical business processes from user perspective
+- Explain UI testing strategy (if applicable):
+  - Which framework (Playwright, Cypress, Selenium)
+  - What to test (critical paths, not every detail)
+  - How to handle authentication in E2E tests
+- Define test environment requirements:
+  - Test database state
+  - External service mocks or test environments
+  - Test user accounts
+
+**Key Principles**:
+- Test from user's perspective
+- Cover critical business workflows end-to-end
+- Fewer but more valuable tests (E2E is slow)
+- Run on staging/test environment
+
+#### Test Data Management
+- Provide examples of test data setup for the tech stack
+- Show test fixtures or factory patterns
+- Explain cleanup strategies between tests
+- Demonstrate how to create realistic test data:
+  ```[language]
+  [Example using factories or builders]
+  [Example of database seeding for tests]
+  ```
 
 #### Testing Tools
 - List specific tools and frameworks for each testing category
 - Ensure they're appropriate for the chosen tech stack
-- Include additional tools (mocking, API testing, database testing, etc.)
+- **Unit Testing**: Jest, Vitest, pytest, JUnit, etc.
+- **Integration Testing**: Supertest, TestContainers, etc.
+- **E2E Testing**: Playwright, Cypress, Selenium, etc.
+- **Test Data**: faker.js, factory libraries, etc.
+- **Mocking**: jest.mock, sinon, unittest.mock, etc.
+- **Database Testing**: Test databases, in-memory databases, etc.
 
 #### Continuous Testing
-- Define when each type of test runs
-- Suggest CI/CD integration points
-- Mention coverage goals if appropriate
+- Define when each type of test runs:
+  - **Developer machine**: Unit tests on save/commit
+  - **CI on commit**: All unit tests
+  - **CI on PR**: Unit + Integration tests
+  - **Before deployment**: Full suite including E2E
+  - **Post-deployment**: Smoke tests on production
+- Suggest CI/CD integration points and pipelines
+- Define acceptable test execution times:
+  - Unit tests: < 10 seconds total
+  - Integration tests: < 2 minutes total
+  - E2E tests: < 10 minutes total
+- Mention coverage goals if appropriate (e.g., 80% line coverage for critical modules)
 
 ### 8. Design Decisions
 
@@ -400,7 +465,9 @@ Before finalizing, verify:
 - [ ] Database schema includes all tables/collections, keys, and indexes
 - [ ] Every requirement is covered by at least one correctness property
 - [ ] All error scenarios from requirements are included in error handling
-- [ ] Property-based testing section includes all properties with test descriptions
+- [ ] Unit testing section covers all critical components
+- [ ] Integration testing section covers all API endpoints and module interactions
+- [ ] E2E testing section covers critical user workflows
 - [ ] Testing tools are appropriate for the chosen tech stack
 - [ ] Code examples use correct syntax for the language/framework
 
@@ -459,9 +526,10 @@ Adapt to your specific system architecture.
 - This document bridges requirements (WHAT) and implementation (HOW)
 - Focus on architectural decisions, not low-level implementation details
 - Ensure traceability: every design decision should map back to requirements
-- Correctness properties are critical - they drive property-based testing
+- Correctness properties are critical - they guide what needs to be tested
 - Use the actual technology stack provided, not generic pseudo-code
 - Maintain language/framework idioms and conventions throughout
+- Testing strategy should be practical: unit tests for logic, integration tests for APIs, E2E for user workflows
 
 ## Example Mapping
 
@@ -501,8 +569,25 @@ interface CreateReservationDto {
 *For any* reservation creation request, the system should validate that the requested time slot has no overlapping active reservations before allowing the operation.
 **Validates: Requirements 2.2**
 
-### Property-Based Testing
-3. **Property 3 (Availability validation)**: Generate random time slots, verify overlap detection logic correctly identifies conflicts
+### Testing Strategy
+
+#### Unit Testing
+- **Reservation Service**:
+  - Test createReservation with valid data
+  - Test overlap detection with various time slot scenarios
+  - Test validation errors for invalid time ranges
+  - Test edge cases (same start/end time, past dates, etc.)
+
+#### Integration Testing
+- **API Integration Tests**:
+  - Test POST /api/reservations endpoint with database
+  - Test conflict handling when two users book simultaneously
+  - Test reservation retrieval with actual database queries
+
+#### End-to-End Testing
+- **User Scenarios**:
+  - Complete flow: User selects room → checks availability → creates reservation → sees confirmation
+  - Conflict scenario: User tries to book already-reserved time slot → sees error message
 ```
 
 ## Now Generate
